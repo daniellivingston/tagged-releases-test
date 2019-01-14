@@ -12,15 +12,25 @@ branches:
   only:
     - master
 
+# Generate a dummy binary.
 script:
   - cd src/
   - g++ main.cpp -o main
   - ./main
+  - cp main main-$TRAVIS_OS_NAME
 
-deploy:
-  provider: releases
-  api_key: $GITHUB_OATH_TOKEN
-  file: "main"
-  skip_cleanup: true
-  on:
-    tags: false
+# This is where the magic happens.
+jobs:
+  include:
+    - stage: compile macos assets
+      os: osx
+      deploy: &deploy_base
+        provider: releases
+        api_key: $GITHUB_OATH_TOKEN
+        draft: true
+        skip_cleanup: true
+        file: main-$TRAVIS_OS_NAME
+    - stage: compile linux assets and publish
+      deploy:
+        <<: *deploy_base
+        draft: false
