@@ -1,0 +1,26 @@
+language: c++
+sudo: required
+
+os:
+  - linux
+  - osx
+
+compiler:
+  - gcc
+
+branches:
+  only:
+    - master
+
+script:
+  - cd src/
+  - g++ main.cpp -o main
+  - ./main
+
+deploy:
+  provider: releases
+  api_key: $GITHUB_OATH_TOKEN
+  file: "main"
+  skip_cleanup: true
+  on:
+    tags: false
