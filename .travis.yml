@@ -1,25 +1,6 @@
-language: c++
-sudo: required
+install: skip
+script: date > file-$TRAVIS_OS_NAME.txt
 
-os:
-  - linux
-  - osx
-
-compiler:
-  - gcc
-
-branches:
-  only:
-    - master
-
-# Generate a dummy binary.
-script:
-  - cd src/
-  - g++ main.cpp -o main
-  - ./main
-  - cp main main-$TRAVIS_OS_NAME
-
-# This is where the magic happens.
 jobs:
   include:
     - stage: compile macos assets
@@ -29,7 +10,9 @@ jobs:
         api_key: $GITHUB_OATH_TOKEN
         draft: true
         skip_cleanup: true
-        file: main-$TRAVIS_OS_NAME
+        file: file-$TRAVIS_OS_NAME.txt
+        on:
+          all_branches: true
     - stage: compile linux assets and publish
       deploy:
         <<: *deploy_base
