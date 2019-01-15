@@ -7,6 +7,7 @@ language: ruby
 install: skip
 script: date > file-$TRAVIS_OS_NAME.txt
 
+# Push binaries to GitHub Releases *only* when there is a tagged commit
 jobs:
   include:
     - stage: compile macos assets
@@ -18,7 +19,7 @@ jobs:
         skip_cleanup: true
         file: file-$TRAVIS_OS_NAME.txt
         on:
-          all_branches: true
+          tags: true
     - stage: compile linux assets and publish
       deploy:
         provider: releases
@@ -27,4 +28,4 @@ jobs:
         skip_cleanup: true
         file: file-$TRAVIS_OS_NAME.txt
         on:
-          all_branches: true
+          tags: true
