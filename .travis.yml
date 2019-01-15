@@ -1,3 +1,9 @@
+language: ruby
+sudo: false
+dist: trusty
+
+language: ruby
+
 install: skip
 script: date > file-$TRAVIS_OS_NAME.txt
 
