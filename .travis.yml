@@ -1,31 +1,33 @@
-language: ruby
+language: c++
 sudo: false
 dist: trusty
 
-language: ruby
-
 install: skip
-script: date > file-$TRAVIS_OS_NAME.txt
+script:
+  - cd src/
+  - g++ main.cpp -o main
+  - ./main
+  - cp main main-$TRAVIS_OS_NAME
 
 # Push binaries to GitHub Releases *only* when there is a tagged commit
 jobs:
   include:
-    - stage: compile macos assets
+    - stage: Deploy macOS binary
       os: osx
       deploy:
         provider: releases
         api_key: $GITHUB_OATH_TOKEN
         draft: true
         skip_cleanup: true
-        file: file-$TRAVIS_OS_NAME.txt
+        file: main-$TRAVIS_OS_NAME.txt
         on:
           tags: true
-    - stage: compile linux assets and publish
+    - stage: Deploy Linux binary and publish
       deploy:
         provider: releases
         api_key: $GITHUB_OATH_TOKEN
         draft: false
         skip_cleanup: true
-        file: file-$TRAVIS_OS_NAME.txt
+        file: main-$TRAVIS_OS_NAME.txt
         on:
           tags: true
