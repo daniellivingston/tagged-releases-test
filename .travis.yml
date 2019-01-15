@@ -19,7 +19,7 @@ jobs:
         api_key: $GITHUB_OATH_TOKEN
         draft: true
         skip_cleanup: true
-        file: main-$TRAVIS_OS_NAME.txt
+        file: main-$TRAVIS_OS_NAME
         on:
           tags: true
     - stage: Deploy Linux binary and publish
@@ -28,6 +28,6 @@ jobs:
         api_key: $GITHUB_OATH_TOKEN
         draft: false
         skip_cleanup: true
-        file: main-$TRAVIS_OS_NAME.txt
+        file: main-$TRAVIS_OS_NAME
         on:
           tags: true
