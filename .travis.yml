@@ -5,9 +5,9 @@ jobs:
   include:
     - stage: compile macos assets
       os: osx
-      deploy: &deploy_base
+      deploy:
         provider: releases
-        api_key: $GITHUB_OATH_TOKEN
+        api_key: $GITHUB_TOKEN
         draft: true
         skip_cleanup: true
         file: file-$TRAVIS_OS_NAME.txt
@@ -15,5 +15,10 @@ jobs:
           all_branches: true
     - stage: compile linux assets and publish
       deploy:
-        <<: *deploy_base
+        provider: releases
+        api_key: $GITHUB_TOKEN
         draft: false
+        skip_cleanup: true
+        file: file-$TRAVIS_OS_NAME.txt
+        on:
+          all_branches: true
